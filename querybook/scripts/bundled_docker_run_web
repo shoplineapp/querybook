@@ -33,7 +33,6 @@ while [[ "$#" -gt 0 ]]; do
   esac;
 done
 
-
 flask_server() {
     # Restart flask server in case of crash since we are running webpack at the same time
     # Docker would not restart web container in case of syntax error
@@ -53,5 +52,5 @@ webpack_server() {
 if [ "$HOT_RELOAD" = "true" ]; then
     { flask_server & webpack_server; }
 else
-    ./querybook/scripts/runservice web --debug --webpack ${PORT-10001}
+    ./querybook/scripts/runservice prod_web
 fi

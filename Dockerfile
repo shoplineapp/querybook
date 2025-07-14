@@ -19,11 +19,11 @@ RUN mkdir -p /etc/apt/keyrings && curl -fsSL https://deb.nodesource.com/gpgkey/n
     && apt-get clean
 
 # Install YARN
-RUN npm i -g npm@8.5.0 \
-    && npm i -g yarn@^1.22.10 \
-    && npm explore npm --global -- npm install node-gyp@9.0.0 \
-    && yarn config set cache-folder /mnt/yarn-cache/cache \
-    && yarn config set yarn-offline-mirror /mnt/yarn-offline-mirror
+# RUN npm i -g npm@8.5.0 \
+#     && npm i -g yarn@^1.22.10 \
+#     && npm explore npm --global -- npm install node-gyp@9.0.0 \
+#     && yarn config set cache-folder /mnt/yarn-cache/cache \
+#     && yarn config set yarn-offline-mirror /mnt/yarn-offline-mirror
 
 WORKDIR /opt/querybook
 
@@ -41,8 +41,9 @@ RUN pip install -r requirements/base.txt \
     pip install -r requirements/local.txt; \
     fi
 
-COPY package.json yarn.lock ./
-RUN yarn install --pure-lockfile
+# COPY package.json yarn.lock ./
+# RUN yarn install --pure-lockfile \
+#     && yarn cache clean
 
 # Copy everything else
 COPY . .
@@ -51,7 +52,8 @@ COPY . .
 COPY docs_website/static/changelog/ querybook/static/changelog/
 
 # Webpack if prod
-RUN if [ "${PRODUCTION}" = "true" ] ; then ./node_modules/.bin/webpack --mode=production; fi
+# RUN if [ "${PRODUCTION}" = "true" ]; then node --max-old-space-size=4096 ./node_modules/.bin/webpack --mode=production; fi
+COPY ./dist ./dist
 
 # Environment variables, override plugins path for customization
 ENV QUERYBOOK_PLUGIN=/opt/querybook/plugins
