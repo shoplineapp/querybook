@@ -84,7 +84,7 @@
         "mini-css-extract-plugin": "^2.7.2",
         "moment": "2.29.4",
         "normalizr": "^3.6.2",
-        "pyodide": "^0.27.4",
+        "pyodide": "^0.28.2",
         "qs": "^6.11.0",
         "rc-time-picker": "3.6.4",
         "re-resizable": "4.9.0",
