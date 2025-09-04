@@ -2,7 +2,6 @@ from app.auth.oauth_auth import OAuthLoginManager, OAUTH_CALLBACK_PATH
 from env import QuerybookSettings
 from clients.google_client import get_google_oauth_config
 
-
 class GoogleLoginManager(OAuthLoginManager):
     @property
     def oauth_config(self):
@@ -23,11 +22,17 @@ class GoogleLoginManager(OAuthLoginManager):
                 "https://www.googleapis.com/auth/userinfo.profile",
             ],
         }
-
+    
     def _parse_user_profile(self, resp):
         user = resp.json()
         username = user["email"].split("@")[0]
         return username, user["email"]
+    
+    def _get_authn_url(self):
+        return self.oauth_session.authorization_url(
+            self.oauth_config["authorization_url"],
+            prompt="select_account"
+        )
 
 
 login_manager = GoogleLoginManager()
@@ -41,6 +46,7 @@ def init_app(app):
 
 def login(request):
     return login_manager.login(request)
+
 
 def oauth_authorization_url():
     return login_manager._get_authn_url()

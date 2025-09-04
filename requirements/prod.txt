@@ -1,1 +1,5 @@
 uWSGI==2.0.22
+-r engine/bigquery.txt
+-r engine/trino.txt
+
+-r github_integration/github.txt
