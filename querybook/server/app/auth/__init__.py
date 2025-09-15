@@ -26,10 +26,13 @@ def init_app(flask_app):
         # API LOGIC and Static File are handled differently
         if request.path.startswith(DS_PATH) or request.path.startswith(BUILD_PATH):
             return
+        # Ignore static assets and common browser favicon requests so they don't set redirect target
+        if request.path.startswith("/static/") or request.path == "/favicon.ico":
+            return
         if not current_user.is_authenticated:
             return auth.login(request)
 
-    check_auth  # PYLINT :(
+    check_auth
 
 
 def load_auth():
@@ -69,7 +72,7 @@ def get_login_config():
             )(auth.signup_user_endpoint)
 
         if has_oauth_url:
-            oauth_url = auth.oauth_authorization_url()
+            oauth_url, state = auth.oauth_authorization_url()
 
         login_config = {
             "has_login": has_login,

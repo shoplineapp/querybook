@@ -4,8 +4,18 @@ SHELL := /bin/bash
 bundled: dev_image
 	docker-compose up
 
+bundled_detached: dev_image
+	docker-compose up -d
+
 bundled_off:
 	docker-compose down
+
+restart_web:
+	docker-compose restart web
+
+restart_web_only:
+	docker-compose stop web
+	docker-compose up -d web
 
 web: dev_image remove_running_dev_image
 	docker-compose -f containers/docker-compose.dev.yml run web
@@ -32,7 +42,7 @@ prod_image:
 	docker build --pull -t querybook .
 
 dev_image:
-	docker build --pull -t querybook-dev . --build-arg PRODUCTION=false --build-arg EXTRA_PIP_INSTALLS=dev.txt
+	docker build --pull -f Dockerfile.development -t querybook-dev . --build-arg PRODUCTION=false --build-arg EXTRA_PIP_INSTALLS=dev.txt
 
 test_image:
 	docker build --pull -t querybook-test . --build-arg PRODUCTION=false --build-arg EXTRA_PIP_INSTALLS=test.txt

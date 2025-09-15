@@ -1,5 +1,5 @@
 uWSGI==2.0.22
--r engine/bigquery.txt
+google-cloud-bigquery==3.12.0
+sqlalchemy-bigquery==1.8.0
 -r engine/trino.txt
-
 -r github_integration/github.txt
