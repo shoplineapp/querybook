@@ -4,6 +4,7 @@ from .admin import *
 from .board import *
 from .datadoc import *
 from .environment import *
+from .google_oauth import *
 from .impression import *
 from .metastore import *
 from .query_execution import *

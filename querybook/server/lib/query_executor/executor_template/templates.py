@@ -118,12 +118,34 @@ sqlalchemy_template = StructFormField(
 
 bigquery_template = StructFormField(
     (
+        "auth_method",
+        FormField(
+            field_type=FormFieldType.Select,
+            options=["google_sso", "service_account"],
+            helper="""
+<p>Choose authentication method:</p>
+<ul>
+<li><strong>google_sso</strong>: Use user's Google OAuth credentials (requires login)</li>
+<li><strong>service_account</strong>: Use service account JSON credentials</li>
+</ul>
+""",
+        ),
+    ),
+    (
+        "project_id",
+        FormField(
+            helper="""
+<p>Google Cloud Project ID (required for both authentication methods)</p>
+""",
+        ),
+    ),
+    (
         "google_credentials_json",
         FormField(
             helper="""
 <p>The JSON string used to log in as service account.</p>
+<p>Required only when auth_method is 'service_account'</p>
 <p>If not provided then **GOOGLE_CREDS** from settings will be used</p>
-<p>If both are empty, Application default credentials are used</p>
 """,
         ),
     )

@@ -165,7 +165,7 @@ def on_leave_room(data_doc_id):
 
 
 @register_socket("disconnect", namespace=DATA_DOC_NAMESPACE)
-def disconnect():
+def disconnect(*args, **kwargs):
     data_doc_ids = rooms(request.sid, namespace=DATA_DOC_NAMESPACE)
     for data_doc_id in data_doc_ids:
         leave_room(data_doc_id)

@@ -10,6 +10,7 @@ from logic import (
     query_execution as qe_logic,
     user as user_logic,
 )
+from logic.google_oauth import get_google_credentials_for_user
 from .exc import AlreadyExecutedException, InvalidQueryExecution, ArchivedQueryEngine
 from .all_executors import get_executor_class
 
@@ -43,7 +44,6 @@ def _get_executor_params_and_engine(
         raise ArchivedQueryEngine("This query engine is disabled.")
 
     client_setting = get_client_setting_from_engine(engine, uid, session=session)
-
     return (
         {
             "query_execution_id": query_execution_id,
@@ -77,6 +77,16 @@ def get_client_setting_from_engine(engine, uid=None, session=None) -> Dict:
             proxy_user = user.to_dict()[executor_params["proxy_user_id"]]
         executor_params["proxy_user"] = proxy_user
 
+        # Add Google OAuth credentials for BigQuery if auth_method is google_sso
+        if engine.executor == "bigquery" and executor_params.get("auth_method") == "google_sso":
+            
+            google_oauth_creds = get_google_credentials_for_user(uid)
+            if google_oauth_creds:
+                executor_params["user_oauth_credentials"] = google_oauth_creds
+            else:
+                # If configured for SSO but no credentials, this should fail
+                raise ValueError("BigQuery configured for Google SSO but user has no OAuth credentials. Please log in with Google OAuth.")
+    
     return executor_params
 
 

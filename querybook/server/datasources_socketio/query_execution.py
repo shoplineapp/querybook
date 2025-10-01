@@ -65,7 +65,7 @@ def on_leave_room(query_execution_id):
 
 
 @register_socket("disconnect", namespace=QUERY_EXECUTION_NAMESPACE)
-def disconnect():
+def disconnect(*args, **kwargs):
     query_execution_ids = rooms(request.sid, namespace=QUERY_EXECUTION_NAMESPACE)
     for query_execution_id in query_execution_ids:
         leave_room(query_execution_id)
