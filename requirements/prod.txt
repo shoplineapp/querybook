@@ -1,5 +1,6 @@
 uWSGI==2.0.22
 google-cloud-bigquery==3.12.0
 sqlalchemy-bigquery==1.8.0
+zope.interface>=5.0,<9.0
 -r engine/trino.txt
 -r github_integration/github.txt
