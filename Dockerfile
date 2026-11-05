@@ -9,6 +9,7 @@ RUN mkdir -p /etc/apt/keyrings && curl -fsSL https://deb.nodesource.com/gpgkey/n
     && echo "deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_18.x nodistro main" | tee /etc/apt/sources.list.d/nodesource.list \
     && rm -rf /var/lib/apt/lists/* \
     && apt-get update \
+    && apt-get install --only-upgrade -y --no-install-recommends ca-certificates \
     && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y --allow-downgrades --allow-remove-essential --allow-change-held-packages \
     libsasl2-dev \
     libsasl2-modules \
